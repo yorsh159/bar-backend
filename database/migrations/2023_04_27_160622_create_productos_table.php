@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->double('precio');
+            $table->double('tipo');
             $table->string('imagen');
             $table->string('cantidad')->default(100);
             $table->boolean('estado')->default(1);

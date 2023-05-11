@@ -5,17 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Producto extends Model
+class Mesa extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'codigo',
-        'nombre',
-        'precio',
-        'cantidad',
-        'categoria_id',
-        'tipo',
-        'imagen',
+        'nombre'
+        
     ];
 }
