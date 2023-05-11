@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PedidoCollection;
 use App\Models\Pedido;
 use App\Models\PedidoDetalle;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +16,13 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        return new PedidoCollection(Pedido::with('user')->with('productos')->where('estado',0)->get());
+        $fecha=now();
+        return new PedidoCollection(Pedido::with('user')->with('productos')
+                                            ->where('estado',0)
+                                            //->where('created_at',$fecha)
+                                            //->where('created_at','=',now()->format('Y-m-d'))
+                                            ->orderby('created_at','desc')
+                                            ->get());
     }
 
     /**
@@ -26,6 +33,7 @@ class PedidoController extends Controller
         //Almacenar pedido
         $pedido = new Pedido;
         $pedido->user_id = Auth::user()->id;
+        $pedido->mesa = $request->mesa;
         $pedido->total = $request->total;
         $pedido->save();
 

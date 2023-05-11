@@ -16,6 +16,7 @@ class AuthController extends Controller
 
          //Crear el usuario
          $user = User::create([
+            'codigo'=>$data['codigo'],
             'name' => $data['name'],
             'email' => $data['email'],
             'role'=> $data['role'],
@@ -58,5 +59,17 @@ class AuthController extends Controller
             'user'=>null,
         ];
     }
+    
+    public function update(Request $request, User $usuario){
+
+        $usuario->name = $request->name;
+        $usuario->email = $request->email;
+        $usuario->role = $request->role;
+        
+        $usuario->save();
+    }
+
+
+
 
 }
