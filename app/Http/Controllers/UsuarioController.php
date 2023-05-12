@@ -43,15 +43,21 @@ class UsuarioController extends Controller
         $usuario->save();
         
         return [
-            'usuario'=> $usuario,
+           'usuario'=> $usuario,
         ];
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $usuario)
+    public function destroy(Request $request,User $usuario)
     {
         //
+        $usuario->estado = 0;
+        $usuario->save();
+
+        return[
+            'usuario'=>$usuario,
+        ];
     }
 }

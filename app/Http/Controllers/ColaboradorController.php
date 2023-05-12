@@ -48,19 +48,30 @@ class ColaboradorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Colaborador $colaborador)
     {
-        $colaborador = Colaborador::find($id);
-        $colaborador->update($request->all());
-        return $colaborador;
+        $colaborador->nombre = $request->nombre;
+        $colaborador->email = $request->email;
+        $colaborador->tipo = $request->tipo;
+        $colaborador->save();
+        
+        return [
+           'colaborador'=> $colaborador,
+        ];
         
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, Colaborador $colaborador)
     {
-        //
+        //Eliminar colaborador
+        $colaborador->estado = 0;
+        $colaborador->save();
+
+        return[
+            'colaborador'=>$colaborador,
+        ];
     }
 }
