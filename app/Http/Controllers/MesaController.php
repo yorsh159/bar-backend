@@ -55,8 +55,9 @@ class MesaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Mesa $mesa)
     {
-        //
+        $mesa->estado = 0;
+        $mesa->save();
     }
 }

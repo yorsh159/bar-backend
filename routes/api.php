@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BoletaController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\ColaboradoresController;
@@ -29,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/logout',[AuthController::class,'logout']);
     Route::apiResource('/pedidos', PedidoController::class);
     
+    Route::apiResource('/boletas',BoletaController::class);
 });
 
 Route::apiResource('/usuarios', UsuarioController::class);
@@ -38,6 +40,5 @@ Route::apiResource('/categorias', CategoriaController::class);
 Route::apiResource('/productos', ProductoController::class);
 Route::apiResource('/mesas', MesaController::class);
 
-Route::post('/update',[AuthController::class,'register']);
 Route::post('/registro',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);

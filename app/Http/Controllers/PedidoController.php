@@ -16,11 +16,9 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        $fecha=now();
+        
         return new PedidoCollection(Pedido::with('user')->with('productos')
                                             ->where('estado',0)
-                                            //->where('created_at',$fecha)
-                                            //->where('created_at','=',now()->format('Y-m-d'))
                                             ->orderby('created_at','desc')
                                             ->get());
     }
@@ -66,9 +64,10 @@ class PedidoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pedido $pedido)
+    public function show(string $id, Pedido $pedido)
     {
-        //
+        
+ 
     }
 
     /**

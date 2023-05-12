@@ -24,20 +24,20 @@ class ProductoController extends Controller
     {
         $data = $request->validated();
 
-        // $producto = Producto::create([
-        //     'codigo' => $data['codigo'],
-        //     'nombre' => $data['nombre'],
-        //     'precio' => $data['precio'],
-        //     'cantidad' => $data['cantidad'],
-        //     'categoria_id' => $data['categoria_id'],
-        //     'tipo' => $data['tipo'],
-        //     'imagen' => $data['imagen']
-        // ]);
+        $data = Producto::create([
+            'codigo' => $data['codigo'],
+            'nombre' => $data['nombre'],
+            'precio' => $data['precio'],
+            'cantidad' => $data['cantidad'],
+            'categoria_id' => $data['categoria_id'],
+            'tipo' => $data['tipo'],
+            'imagen' => $data['imagen']
+        ]);
 
-        $data = new Producto($request->all());
-        $path = $request->image->store('public/productos');
+        // $data = new Producto($request->all());
+        // $path = $request->image->store('public/');
         
-        $data->image = $path;
+        // $data->image = $path;
         $data->save();
 
         return[
