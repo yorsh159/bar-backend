@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BoletaCollection;
 use App\Models\Boleta;
 use App\Models\BoletaPedido;
+use App\Models\Pedido;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BoletaController extends Controller
 {
@@ -14,7 +17,19 @@ class BoletaController extends Controller
      */
     public function index()
     {
-        //
+        return new BoletaCollection(Boleta::with('user')
+                                            ->with('pedidos')
+                                            ->orderby('created_at','desc')
+                                            ->get());
+
+        // $query = DB::select('SELECT bp.id, bp.boleta_id, bp.pedido_id, pd.producto_id, pr.nombre, pr.precio ,pd.cantidad, p.total, b.total FROM boleta_pedidos bp
+        //             inner join boletas b on b.id = bp.boleta_id
+        //             inner join pedidos p on p.id = bp.pedido_id
+        //             inner join pedido_detalles pd on pd.pedido_id=bp.pedido_id
+        //             inner join productos pr on pr.id = pd.producto_id');
+        
+        // return response()->json(['data'=>$query]);
+
     }
 
     /**
@@ -26,6 +41,7 @@ class BoletaController extends Controller
         $boleta->user_id = Auth::user()->id;
         $boleta->total = $request->totalBoleta;
         $boleta->dni = $request->dni;
+        $boleta->pago_id = $request->pago;
         $boleta->save();
 
         $id = $boleta->id;
@@ -46,7 +62,8 @@ class BoletaController extends Controller
 
         return [
             'message'=>'Guardando boleta'.$boleta->id,
-            'pedidos'=> $request->nota
+            'pedidos'=> $request->nota,
+
         ];
     }
 
