@@ -23,26 +23,32 @@ class ProductoController extends Controller
     public function store(ProductoRequest $request)
     {
         $data = $request->validated();
+      
+        $producto = new Producto;
 
-        $data = Producto::create([
-            'codigo' => $data['codigo'],
-            'nombre' => $data['nombre'],
-            'precio' => $data['precio'],
-            'cantidad' => $data['cantidad'],
-            'categoria_id' => $data['categoria_id'],
-            'tipo' => $data['tipo'],
-            'imagen' => $data['imagen']
-        ]);
+        $producto->codigo = $request->codigo;
+        $producto->nombre = $request->nombre;
+        $producto->precio = $request->precio;
+        $producto->cantidad = $request->cantidad;
+        $producto->categoria_id = $request->categoria_id;
+        $producto->tipo = $request->tipo;
 
-        // $data = new Producto($request->all());
-        // $path = $request->image->store('public/');
+        // $file = $request->imagen;
+        // $filename = $file->getClientOriginalName();
+        // $filename = pathinfo($filename,PATHINFO_FILENAME);
+        // $name_file = str_replace(" ","_",$filename);
+        // $extension = $file->getClientOriginalExtension();
+        // $picture = $name_file.'.'.$extension;
+        // $file->move('C:\xampp\htdocs\react-bar\public\img',$picture);
+
+        $producto->imagen = $request->imagen->store('');   
+              
+        $producto->save();
         
-        // $data->image = $path;
-        $data->save();
 
         return[
             
-            'producto'=>$data,
+            'producto'=>$producto,
         ];
     }
 
