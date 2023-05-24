@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BoletaController;
 use App\Http\Controllers\CategoriaController;
 
 use Illuminate\Support\Facades\Route;
@@ -22,3 +23,6 @@ Route::get('/', function () {
 
 
 Route::get('/categorias',[CategoriaController::class,'index'] );
+Route::get('/ticket',[BoletaController::class,'listar']);
+Route::get('/detalle/{id}',[BoletaController::class,'detalle'])->name('detalle');
+Route::get('/detalle/pdf/{id}',[BoletaController::class,'PDF'])->name('pdf');

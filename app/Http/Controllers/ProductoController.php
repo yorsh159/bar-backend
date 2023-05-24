@@ -32,20 +32,25 @@ class ProductoController extends Controller
         $producto->cantidad = $request->cantidad;
         $producto->categoria_id = $request->categoria_id;
         $producto->tipo = $request->tipo;
+        //$producto->imagen = $request->imagen;
 
-        // $file = $request->imagen;
-        // $filename = $file->getClientOriginalName();
-        // $filename = pathinfo($filename,PATHINFO_FILENAME);
-        // $name_file = str_replace(" ","_",$filename);
-        // $extension = $file->getClientOriginalExtension();
-        // $picture = $name_file.'.'.$extension;
-        // $file->move('C:\xampp\htdocs\react-bar\public\img',$picture);
+        if($request->hasFile('imagen')){
+            $file=$request->file('imagen');
 
-        $producto->imagen = $request->imagen->store('');   
-              
-        $producto->save();
+            $filename = $file->getClientOriginalName();
+            $filename = pathinfo($filename,PATHINFO_FILENAME);
+
+            $name_file = str_replace(" ","_",$filename);
+
+            $extension = $file->getClientOriginalExtension();
+
+            $picture = $name_file.'.'.$extension;
+            $file->move('C:\xampp\htdocs\react-bar\public\img',$picture);
+            $producto->imagen = $picture;
         
-
+        }
+        $producto->save();     
+        
         return[
             
             'producto'=>$producto,
@@ -57,15 +62,29 @@ class ProductoController extends Controller
      */
     public function show(Producto $producto)
     {
-        //
+        
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Producto $producto)
+    public function update(ProductoRequest $request, Producto $producto)
     {
-        //
+        $data = $request->validated();
+
+        $producto->codigo = $request->codigo;
+        $producto->nombre = $request->nombre;
+        $producto->precio = $request->precio;
+        $producto->cantidad = $request->cantidad;
+        $producto->categoria_id = $request->categoria_id;
+        $producto->tipo = $request->tipo;
+        $producto->save();
+
+        return[
+            'producto'=>$producto,
+        ];
+        
     }
 
     /**
@@ -73,6 +92,11 @@ class ProductoController extends Controller
      */
     public function destroy(Producto $producto)
     {
-        //
+        $producto->estado = 0;
+        $producto->save();
+
+        return[
+            'producto'=>$producto,
+        ];
     }
 }
