@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductoEditarRequest;
 use App\Http\Requests\ProductoRequest;
 use App\Http\Resources\ProductoCollection;
 use App\Models\Producto;
@@ -69,9 +70,9 @@ class ProductoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductoRequest $request, Producto $producto)
+    public function update(ProductoEditarRequest $request, Producto $producto)
     {
-        $data = $request->validated();
+        $request->validated();
 
         $producto->codigo = $request->codigo;
         $producto->nombre = $request->nombre;
