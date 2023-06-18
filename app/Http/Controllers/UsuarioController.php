@@ -40,6 +40,9 @@ class UsuarioController extends Controller
         $usuario->name = $request->name;
         $usuario->email = $request->email;
         $usuario->role = $request->role;
+        $password = $request->password;
+        $pass=bcrypt($password);
+        $usuario->password=$pass;
         $usuario->save();
         
         return [

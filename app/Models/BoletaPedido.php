@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class BoletaPedido extends Model
 {
     use HasFactory;
+
+    public function boleta(){
+        return $this->belongsTo(Boleta::class);
+    }
+
+    public function pedido(){
+        return $this->belongsToMany(PedidoDetalle::class,'pedido_detalles');
+    }
 }
