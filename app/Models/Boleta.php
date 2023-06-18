@@ -15,8 +15,8 @@ class Boleta extends Model
     public function pedidos(){
         return $this->belongsToMany(Pedido::class,'boleta_pedidos');
     }
-    public function productos(){
-        return $this->belongsToMany(Producto::class,'boleta_pedidos')->withPivot('pedido');
-    }
+    // public function productos(){
+    //     return $this->belongsToMany(Producto::class,'boleta_pedidos')->withPivot('pedido');
+    // }
 
 }

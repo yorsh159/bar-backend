@@ -58,7 +58,13 @@
 
         <hr/>
 
+        
+
         <p>DNI: {{$ticket->dni}}</p>
+        <p>Fecha: {{date('d-m-Y')}}</p>
+        <p>Fecha: {{$date}}</p>
+        <p>Fecha: {{$fecha1}}</p>
+
 
     </div>
 

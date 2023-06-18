@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PedidoCollection;
+use App\Models\Horario;
 use App\Models\Pedido;
 use App\Models\PedidoDetalle;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
@@ -16,9 +18,19 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        
+        //$horario = Horario::where('id',1)->get();
+
+
+        $start=DB::select("SELECT inicio FROM horario WHERE id=1");
+        $end=DB::select("SELECT fin FROM horario WHERE id=1");
+
+        $inicio=json_decode(json_encode($start), true);
+        $fin=json_decode(json_encode($end), true);
+
         return new PedidoCollection(Pedido::with('user')->with('productos')
                                             ->where('estado',0)
+                                            ->where('ticket_estado',0)
+                                            ->whereBetween('created_at',[$inicio,$fin])
                                             ->orderby('created_at','desc')
                                             ->get());
     }
@@ -64,18 +76,28 @@ class PedidoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id, Pedido $pedido)
+    public function show()
     {
-        
- 
+
+        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Pedido $pedido)
+    public function update(Request $request)
     {
-        //
+        $pedidos=$request->nota;
+
+        $pedido_upd = [];
+
+        foreach($pedidos as $pedido){
+            
+            DB::update("UPDATE pedidos set ticket_estado = 1  WHERE id = '$pedido->id'");
+        }
+
+       
+        
     }
 
     /**

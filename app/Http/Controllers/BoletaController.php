@@ -6,6 +6,7 @@ use App\Http\Resources\BoletaCollection;
 use App\Models\Boleta;
 use App\Models\BoletaPedido;
 use App\Models\Pedido;
+use Carbon\Carbon;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,18 +20,21 @@ class BoletaController extends Controller
      */
     public function index()
     {
-        return new BoletaCollection(Boleta::with('user')
-                                            ->with('pedidos')
-                                            ->orderby('created_at','desc')
-                                            ->get());
+        $start=DB::select("SELECT inicio FROM horario WHERE id=1");
+        $end=DB::select("SELECT fin FROM horario WHERE id=1");
 
-        // $query = DB::select('SELECT bp.id, bp.boleta_id, bp.pedido_id, pd.producto_id, pr.nombre, pr.precio ,pd.cantidad, p.total, b.total FROM boleta_pedidos bp
-        //             inner join boletas b on b.id = bp.boleta_id
-        //             inner join pedidos p on p.id = bp.pedido_id
-        //             inner join pedido_detalles pd on pd.pedido_id=bp.pedido_id
-        //             inner join productos pr on pr.id = pd.producto_id');
+        $inicio=json_decode(json_encode($start), true);
+        $fin=json_decode(json_encode($end), true);
+
+        return new BoletaCollection(Boleta::with('user')
+                                          ->with('pedidos')
+                                          ->whereBetween('created_at',[$inicio,$fin])
+                                          ->orderby('created_at','desc')
+                                          ->get());
+
         
-        // return response()->json(['data'=>$query]);
+        
+        
 
     }
 
@@ -108,6 +112,11 @@ class BoletaController extends Controller
 
     public function detalle($id){
 
+        $date= today()->format('d-m-Y');
+        //$date1= $date->addDays(1)->toDateTimeString();
+        $fecha=Carbon::now();
+        $fecha1=Carbon::tomorrow()->format('d-m-Y');
+
         $ticket = DB::select('SELECT bp.id, bp.boleta_id, bp.pedido_id, pd.producto_id, pr.nombre, pr.precio ,pd.cantidad, p.total as subtotal, b.total as total, b.created_at, b.igv, b.subtotal as gravada, b.dni FROM boleta_pedidos bp
                                inner join boletas b on b.id = bp.boleta_id
                                inner join pedidos p on p.id = bp.pedido_id
@@ -115,7 +124,7 @@ class BoletaController extends Controller
                                inner join productos pr on pr.id = pd.producto_id
                                where bp.boleta_id='.$id);
 
-        return view('detalle',['ticket'=>$ticket]);
+        return view('detalle',['ticket'=>$ticket,'date'=>$date,'fecha1'=>$fecha1]);
 
     }
 
