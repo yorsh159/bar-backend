@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');      
             $table->foreignId('colaborador_id')->references('id')->on('colaborador')->constrained()->onDelete('cascade');
-            $table->double('comision');
-            $table->double('total');
+            $table->double('comision_total');
+            $table->double('comision_unitaria');
+            $table->boolean('pagado')->default(0);
             $table->timestamps();
         });
     }

@@ -72,7 +72,7 @@ class ProductoController extends Controller
      */
     public function update(ProductoEditarRequest $request, Producto $producto)
     {
-        $request->validated();
+        //$request->validated();
 
         $producto->codigo = $request->codigo;
         $producto->nombre = $request->nombre;
@@ -80,6 +80,23 @@ class ProductoController extends Controller
         $producto->cantidad = $request->cantidad;
         $producto->categoria_id = $request->categoria_id;
         $producto->tipo = $request->tipo;
+
+        if($request->hasFile('imagen')){
+            $file=$request->file('imagen');
+
+            $filename = $file->getClientOriginalName();
+            $filename = pathinfo($filename,PATHINFO_FILENAME);
+
+            $name_file = str_replace(" ","_",$filename);
+
+            $extension = $file->getClientOriginalExtension();
+
+            $picture = $name_file.'.'.$extension;
+            $file->move('C:\xampp\htdocs\react-bar\public\img',$picture);
+            $producto->imagen = $picture;
+        
+        }
+
         $producto->save();
 
         return[

@@ -25,45 +25,27 @@ class ComisionesController extends Controller
     {
         $comision = new Comisiones;
 
-        $comision->user_id = Auth::user()->id;
-        $comision->colaborador_id = $request->colaborador;
-        $comision->comision = $request->comision;
-        $comision->total = $request->totalBoleta;
-        $comision->save();
+        $user = Auth::user()->id;
+        $comision_total = $request->comisionBoleta;
+        $comision_unitaria = $request->comisionUnitaria;
+ 
+        $colaboradores = $request->colaborador;
 
-        $id = $comision->id;
+        $colaboradorArr = [];
 
-        $notas = $request->notas;
-
-        $nota_detalle = [];
-        
-        foreach($notas as $nota){
-            $nota_detalle[]=[
-                'comisiones_id'=>$id,
-                'pedido_id'=>$nota['id'],
-                'mesa'=>$nota['mesa'],
-                'created_at'=> now(),
-                'updated_at'=> now(),
-            ];
-        }
-        ComisionNotaDetalle::insert($nota_detalle);
-
-        $pedidos = $request->pedidos;      
-        
-        $pedido_detalle = [];
-
-        foreach($pedidos['pedido'] as $pedido){  
-            $pedido_detalle[]=[
-                'comisiones_id'=>$id,
-                'pedido_id'=>$pedido['nota'],
-                'cantidad'=>$pedido['cantidad'],
-                'producto_id'=>$pedido['id'],
-                'created_at'=> now(),
-                'updated_at'=> now(),
+        foreach($colaboradores as $colaborador){
+            $colaboradorArr[]=[
+                'user_id'=>$user,
+                'colaborador_id'=>$colaborador['id'],
+                'comision_total'=>$comision_total,
+                'comision_unitaria'=>$comision_unitaria,
+                'created_at'=>now(),
+                'updated_at'=>now(),
             ];
         }
 
-        ComisionPedidoDetalle::insert($pedido_detalle);
+        Comisiones::insert($colaboradorArr);
+
 
     }
 

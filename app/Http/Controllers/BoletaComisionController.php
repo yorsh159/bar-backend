@@ -17,6 +17,7 @@ class BoletaComisionController extends Controller
 
         $inicio=json_decode(json_encode($start), true);
         $fin=json_decode(json_encode($end), true);
+        
         $query = DB::select("SELECT bp.id,bp.boleta_id, b.total as 'total_igv',
                              (
                                SUM(i.monto*pd.cantidad)
