@@ -16,14 +16,18 @@ class MarcacionController extends Controller
      */
     public function index()
     {
-       $fechaHoy=today();
-       $fechaTomorrow=Carbon::tomorrow(); 
+        $start=DB::select("SELECT inicio FROM horario WHERE id=1");
+        $end=DB::select("SELECT fin FROM horario WHERE id=1");
+
+        $inicio=json_decode(json_encode($start), true);
+        $fin=json_decode(json_encode($end), true);
        
        //return Marcacion::where('estado','entrada')->whereBetween('entrada_salida',[$fechaHoy,$fechaTomorrow])->get();
 
-       $query=DB::select("SELECT m.id,m.codigo,c.nombre,m.estado,m.entrada,c.tipo FROM marcacion m
+       $query=DB::select("SELECT m.id,c.id as colaborador_id ,m.codigo,c.nombre,m.estado,m.entrada,c.tipo FROM marcacion m
                           INNER JOIN colaborador c on c.codigo=m.codigo
-                          WHERE m.entrada BETWEEN '". $fechaHoy ."'". " AND " ."'". $fechaTomorrow."'"." AND m.estado='entrada'" ); 
+                          WHERE m.entrada BETWEEN (SELECT inicio FROM horario) and (SELECT fin FROM horario)
+                          AND m.estado='entrada'" ); 
 
         return response()->json(['data'=>$query]);
 
