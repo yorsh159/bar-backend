@@ -52,6 +52,6 @@ class CategoriaController extends Controller
      */
     public function destroy(Categoria $producto)
     {
-        //
+        // 
     }
 }

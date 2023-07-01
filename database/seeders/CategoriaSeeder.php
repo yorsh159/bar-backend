@@ -15,45 +15,32 @@ class CategoriaSeeder extends Seeder
     public function run()
     {
         DB::table('categorias')->insert([
-            'nombre' => 'Café',
-            'icono' => 'cafe',
+            'nombre' => 'Tragos',
+            'icono' => 'tragos',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         
         DB::table('categorias')->insert([
-            'nombre' => 'Hamburguesas',
-            'icono' => 'hamburguesa',
+            'nombre' => 'Cervezas',
+            'icono' => 'cervezas',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         
         DB::table('categorias')->insert([
-            'nombre' => 'Pizzas',
-            'icono' => 'pizza',
+            'nombre' => 'Licores',
+            'icono' => 'licores',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         
         DB::table('categorias')->insert([
-            'nombre' => 'Donas',
-            'icono' => 'dona',
+            'nombre' => 'Otros',
+            'icono' => 'otros',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         
-        DB::table('categorias')->insert([
-            'nombre' => 'Pasteles',
-            'icono' => 'pastel',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-        
-        DB::table('categorias')->insert([
-            'nombre' => 'Galletas',
-            'icono' => 'galletas',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
     }
 }

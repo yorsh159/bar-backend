@@ -14,13 +14,8 @@ class IncentivoController extends Controller
      */
     public function index()
     {
-        $start=DB::select("SELECT inicio FROM horario WHERE id=1");
-        $end=DB::select("SELECT fin FROM horario WHERE id=1");
-
-        $inicio=json_decode(json_encode($start), true);
-        $fin=json_decode(json_encode($end), true);
         
-        $query=DB::select("SELECT i.id,i.codigo,p.nombre,i.monto,i.estado FROM incentivo i
+        $query=DB::select("SELECT i.id,i.codigo,i.producto_id,p.nombre,i.monto,i.monto_taxi,i.estado FROM incentivo i
                            INNER JOIN productos p on p.id=i.producto_id
                            WHERE i.estado=1" ); 
 
@@ -36,6 +31,7 @@ class IncentivoController extends Controller
 
         $incentivo->codigo = $request->codigo;
         $incentivo->monto = $request->monto;
+        $incentivo->monto_taxi = $request->montoTaxi;
         $incentivo->producto_id = $request->producto;
         $incentivo->save();
 
@@ -55,9 +51,16 @@ class IncentivoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Incentivo $incentivo)
     {
-        //
+        $incentivo->codigo = $request->codigo;
+        $incentivo->monto = $request->monto;
+        $incentivo->monto_taxi = $request->montoTaxi;
+        $incentivo->save();
+
+        return [
+            'message' => 'Actualizado con éxito',
+        ];
     }
 
     /**
