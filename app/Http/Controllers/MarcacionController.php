@@ -27,9 +27,10 @@ class MarcacionController extends Controller
        $query=DB::select("SELECT m.id,c.id as colaborador_id ,m.codigo,c.nombre,m.estado,m.entrada,c.tipo FROM marcacion m
                           INNER JOIN colaborador c on c.codigo=m.codigo
                           WHERE m.entrada BETWEEN (SELECT inicio FROM horario) and (SELECT fin FROM horario)
-                          AND m.estado='entrada'" ); 
+                          AND m.estado='entrada' AND c.tipo='compañia' " ); 
 
         return response()->json(['data'=>$query]);
+
 
     }
 
@@ -41,6 +42,11 @@ class MarcacionController extends Controller
         //$request->validated();
 
         $colaborador = $request->codigo;
+
+        $nombre = Colaborador::where('codigo',$colaborador)->get('nombre');
+        $name=$nombre->implode('nombre');
+
+
         if(Colaborador::where('codigo','=',$colaborador)->first()){
 
             if(Marcacion::where('codigo','=',$colaborador)->where('estado','entrada')->first()){
@@ -59,7 +65,7 @@ class MarcacionController extends Controller
                 Marcacion::insert($marcacion);
 
                 return[
-                    'message'=>'Se registró ingreso.',
+                    'message'=>'Se registró ingreso de '.$name,
                 ];
             }     
             

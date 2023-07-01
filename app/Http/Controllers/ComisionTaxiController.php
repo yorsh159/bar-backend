@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comisiones;
-use App\Models\ComisionNotaDetalle;
-use App\Models\ComisionPedidoDetalle;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class ComisionesController extends Controller
+class ComisionTaxiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,8 +22,6 @@ class ComisionesController extends Controller
      */
     public function store(Request $request)
     {
-        $comision = new Comisiones;
-
         $user = Auth::user()->id;
         $comision_total = $request->comisionBoleta;
         $comision_unitaria = $request->comisionUnitaria;
@@ -47,22 +42,21 @@ class ComisionesController extends Controller
         }
         
         Comisiones::insert($colaboradorArr);
-
+        
         $now=now();
         $boletas=$request->nota;
-
+        
         foreach($boletas as $boleta){
             $boleta_id = $boleta['id'];
-            DB::update("UPDATE boletas set is_comision = 1, updated_at = '$now'  WHERE id = $boleta_id");
+            DB::update("UPDATE boletas set is_comision_taxi = 1, updated_at = '$now'  WHERE id = $boleta_id");
                     
         }
-
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Comisiones $comisiones)
+    public function show(string $id)
     {
         //
     }
@@ -70,7 +64,7 @@ class ComisionesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comisiones $comisiones)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -78,7 +72,7 @@ class ComisionesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comisiones $comisiones)
+    public function destroy(string $id)
     {
         //
     }

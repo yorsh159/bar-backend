@@ -5,16 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class BoletaComisionController extends Controller
+class BoletaComisionTaxiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {    
+    {
         $query = DB::select("SELECT bp.id,bp.boleta_id, b.total as 'total_igv',
                              (
-                               SUM(i.monto*pd.cantidad)
+                               SUM(i.monto_taxi*pd.cantidad)
                              
                              )  as 'comision',
                              b.created_at, b.updated_at
@@ -22,7 +22,7 @@ class BoletaComisionController extends Controller
                              inner join boletas b on b.id = bp.boleta_id
                              inner join pedido_detalles pd on pd.pedido_id=bp.pedido_id
                              join incentivo i on i.producto_id = pd.producto_id
-                             where b.estado=1 and b.is_comision=0 and b.created_at 
+                             where b.estado=1 and b.is_comision_taxi=0 and b.created_at 
                              BETWEEN (SELECT inicio FROM horario) and (SELECT fin FROM horario)
                              GROUP BY bp.boleta_id");
 

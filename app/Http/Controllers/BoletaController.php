@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BoletaCollection;
 use App\Models\Boleta;
 use App\Models\BoletaPedido;
-use App\Models\Pedido;
 use Carbon\Carbon;
 use PDF;
 use Illuminate\Http\Request;
@@ -28,12 +27,10 @@ class BoletaController extends Controller
 
         return new BoletaCollection(Boleta::with('user')
                                           ->with('pedidos')
+                                          ->where('estado',1)
                                           ->whereBetween('created_at',[$inicio,$fin])
                                           ->orderby('created_at','desc')
                                           ->get());
-
-        
-        
         
 
     }
@@ -88,13 +85,29 @@ class BoletaController extends Controller
      */
     public function update(Request $request, Boleta $boleta)
     {
-        //
+        $boleta->estado = 0;
+        $boleta->save();
+
+        $pedidos=$request->pedidos;
+        $now=now();
+
+        $pedido_upd = [];
+
+        foreach($pedidos as $pedido){
+            $pedido_upd = $pedido['id'];
+            DB::update("UPDATE pedidos set ticket_estado = 0, updated_at = '$now'  WHERE id = $pedido_upd");
+                    
+        }
+
+        return[
+            'message'=>'Se actualizó el elemento',
+        ];
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Boleta $boleta)
+    public function destroy(Boleta $boleta, Request $request)
     {
         //
     }

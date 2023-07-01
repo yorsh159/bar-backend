@@ -70,7 +70,7 @@ class ProductoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductoEditarRequest $request, Producto $producto)
+    public function update(Request $request, Producto $producto)
     {
         //$request->validated();
 
@@ -92,7 +92,7 @@ class ProductoController extends Controller
             $extension = $file->getClientOriginalExtension();
 
             $picture = $name_file.'.'.$extension;
-            $file->move('C:\xampp\htdocs\react-bar\public\img',$picture);
+            $file->move('react-bar\public\img',$picture);
             $producto->imagen = $picture;
         
         }
