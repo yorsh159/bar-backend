@@ -25,13 +25,22 @@ class ComisionesController extends Controller
      */
     public function store(Request $request)
     {
-        $comision = new Comisiones;
+        
 
         $user = Auth::user()->id;
+
         $comision_total = $request->comisionBoleta;
         $comision_unitaria = $request->comisionUnitaria;
  
         $colaboradores = $request->colaborador;
+
+        $boleta_id = $request->nota;
+        //$id=json_decode($boleta_id);
+        //$id2=implode($id);
+        foreach($boleta_id as $boleta_id){
+            $id=$boleta_id['id'];
+        }
+
 
         $colaboradorArr = [];
 
@@ -41,6 +50,7 @@ class ComisionesController extends Controller
                 'colaborador_id'=>$colaborador['id'],
                 'comision_total'=>$comision_total,
                 'comision_unitaria'=>$comision_unitaria,
+                'ticket_id'=> $id,
                 'created_at'=>now(),
                 'updated_at'=>now(),
             ];
@@ -48,14 +58,21 @@ class ComisionesController extends Controller
         
         Comisiones::insert($colaboradorArr);
 
+
         $now=now();
         $boletas=$request->nota;
+        
 
         foreach($boletas as $boleta){
             $boleta_id = $boleta['id'];
-            DB::update("UPDATE boletas set is_comision = 1, updated_at = '$now'  WHERE id = $boleta_id");
-                    
+            DB::update("UPDATE boletas set is_comision = 1, updated_at = '$now'  WHERE id = $boleta_id");         
         }
+
+        //foreach($boletas as $boleta){
+        //    
+        //    $boleta_id = $boleta['id'];
+        //    DB::update("UPDATE comisiones set ticket_id = $boleta_id, updated_at = '$now'  WHERE id = $id");         
+        //}
 
     }
 

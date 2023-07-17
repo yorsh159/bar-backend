@@ -42,8 +42,8 @@
                     <td>{{$ticket->id}}</td>
                     <td>{{$ticket->nombre}}</td>
                     <td style="text-align: right">{{$ticket->cantidad}}</td>
-                    <td style="text-align: right">{{$ticket->precio}}</td>
-                    <td style="text-align: right">{{($ticket->cantidad)*($ticket->precio)}}</td>                 
+                    <td style="text-align: right">{{number_format($ticket->precio,2,'.','')}}</td>
+                    <td style="text-align: right">{{number_format(($ticket->cantidad)*($ticket->precio),2,'.','')}}</td>                 
                 </tr> 
             
             @endforeach
@@ -51,19 +51,16 @@
         </table>
 
         <div style="text-align: right">
-            <p>Subtotal: {{$ticket->subtotal}}</p>
-            <p>IGV 18%: {{$ticket->igv}}</p>
-            <p>Total: {{$ticket->total}}</p>
+            <p>Subtotal: {{number_format($ticket->subtotal,2,'.','')}}</p>
+            <p>IGV 18%: {{number_format($ticket->igv,2,'.','')}}</p>
+            <p>Total: {{number_format($ticket->total,2,'.','')}}</p>
         </div>
-
-        <hr/>
-
         
+        <hr/>
 
         <p>DNI: {{$ticket->dni}}</p>
         <p>Fecha: {{date('d-m-Y')}}</p>
-        <p>Fecha: {{$date}}</p>
-        <p>Fecha: {{$fecha1}}</p>
+
 
 
     </div>
