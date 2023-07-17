@@ -47,6 +47,9 @@ class BoletaController extends Controller
         $boleta->pago_id = $request->pago;
         $boleta->igv = $request->igvBoleta;
         $boleta->subtotal = $request->subTotalBoleta;
+        $boleta->nombre = $request->nombre;
+        $boleta->paterno = $request->paterno;
+        $boleta->materno = $request->materno;
         $boleta->save();
 
         $id = $boleta->id;
@@ -86,6 +89,7 @@ class BoletaController extends Controller
     public function update(Request $request, Boleta $boleta)
     {
         $boleta->estado = 0;
+        $boleta->observacion = $request->motivo;
         $boleta->save();
 
         $pedidos=$request->pedidos;
@@ -98,6 +102,10 @@ class BoletaController extends Controller
             DB::update("UPDATE pedidos set ticket_estado = 0, updated_at = '$now'  WHERE id = $pedido_upd");
                     
         }
+
+        $idBoleta = $request->id;
+
+        DB::update("UPDATE comisiones set estado = 0, updated_at = '$now'  WHERE ticket_id = $idBoleta");
 
         return[
             'message'=>'Se actualizó el elemento',
@@ -130,7 +138,7 @@ class BoletaController extends Controller
         $fecha=Carbon::now();
         $fecha1=Carbon::tomorrow()->format('d-m-Y');
 
-        $ticket = DB::select('SELECT bp.id, bp.boleta_id, bp.pedido_id, pd.producto_id, pr.nombre, pr.precio ,pd.cantidad, p.total as subtotal, b.total as total, b.created_at, b.igv, b.subtotal as gravada, b.dni FROM boleta_pedidos bp
+        $ticket = DB::select('SELECT bp.id, bp.boleta_id, bp.pedido_id, pd.producto_id, pr.nombre, pr.precio ,pd.cantidad, b.total as subtotal, b.total as total, b.created_at, b.igv, b.subtotal as gravada, b.dni, b.nombre as nomcli,b.paterno,b.materno FROM boleta_pedidos bp
                                inner join boletas b on b.id = bp.boleta_id
                                inner join pedidos p on p.id = bp.pedido_id
                                inner join pedido_detalles pd on pd.pedido_id=bp.pedido_id
@@ -143,14 +151,14 @@ class BoletaController extends Controller
 
     public function PDF($id){
 
-        $ticket = DB::select('SELECT bp.id, bp.boleta_id, bp.pedido_id, pd.producto_id, pr.nombre, pr.precio ,pd.cantidad, p.total as subtotal, b.total as total, b.created_at, b.igv, b.subtotal as gravada, b.dni FROM boleta_pedidos bp
+        $ticket = DB::select('SELECT bp.id, bp.boleta_id, bp.pedido_id, pd.producto_id, pr.nombre, pr.precio ,pd.cantidad, b.total as subtotal, b.total as total, b.created_at, b.igv, b.subtotal as gravada, b.dni, b.nombre as nomcli,b.paterno,b.materno FROM boleta_pedidos bp
                               inner join boletas b on b.id = bp.boleta_id
                               inner join pedidos p on p.id = bp.pedido_id
                               inner join pedido_detalles pd on pd.pedido_id=bp.pedido_id
                               inner join productos pr on pr.id = pd.producto_id
                               where bp.boleta_id='.$id);
 
-        $pdf = PDF::loadView('pdf',['ticket'=>$ticket])->setPaper('A6');
+        $pdf = PDF::loadView('pdf',['ticket'=>$ticket])->setPaper(array(0,0,340,650))->set_option('dpi', 80);
         //$pdf->loadHTML('<h1>Test</h1>');
         return $pdf->stream();
 

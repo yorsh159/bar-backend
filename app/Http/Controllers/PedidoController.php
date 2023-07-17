@@ -85,17 +85,17 @@ class PedidoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request,Pedido $pedido)
     {
-        $pedidos=$request->nota;
-
-        $pedido_upd = [];
-
-        foreach($pedidos as $pedido){
-            
-            DB::update("UPDATE pedidos set ticket_estado = 1  WHERE id = '$pedido->id'");
-        }
-
+        // $pedidos=$request->nota;
+        // $pedido_upd = [];
+        // foreach($pedidos as $pedido){
+        //     DB::update("UPDATE pedidos set ticket_estado = 1  WHERE id = '$pedido->id'");
+        // }
+        $pedido->estado=1;
+        $pedido->save();
+        
+        
        
         
     }
@@ -105,6 +105,7 @@ class PedidoController extends Controller
      */
     public function destroy(Pedido $pedido)
     {
-        //
+        $pedido->estado=1;
+        $pedido->save();
     }
 }

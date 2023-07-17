@@ -36,9 +36,11 @@ class LiquidacionController extends Controller
 
     public function comision_total()
     {
-        $query=DB::select("SELECT colaborador_id, SUM(comision_unitaria) FROM comisiones
-        WHERE created_at BETWEEN (SELECT inicio FROM horario) and (SELECT fin FROM horario)
-        GROUP BY colaborador_id");
+        $query=DB::select("SELECT c.colaborador_id,co.nombre, SUM(c.comision_unitaria) as comision_total FROM comisiones c
+        INNER JOIN colaborador co on co.id=c.colaborador_id
+        WHERE c.created_at BETWEEN (SELECT inicio FROM horario) and (SELECT fin FROM horario)
+        and c.estado=1
+        GROUP BY c.colaborador_id");
 
         return response()->json(['data'=>$query]);
     }
@@ -46,7 +48,9 @@ class LiquidacionController extends Controller
     public function ventas(){
         $query=DB::select("SELECT pd.id,pd.pedido_id,pd.producto_id,p.tipo,p.nombre,SUM(pd.cantidad) as CantidadVendida,p.precio,(SUM(pd.cantidad) * p.precio ) as monto from pedido_detalles pd 
         inner join productos p on p.id=pd.producto_id
+        inner JOIN pedidos pe on pe.id=pd.pedido_id
         WHERE pd.created_at BETWEEN (SELECT inicio FROM horario) and (SELECT fin FROM horario)
+        and pe.ticket_estado = 1
         GROUP BY pd.producto_id");
 
         return response()->json(['data'=>$query]);

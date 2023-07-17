@@ -57,6 +57,7 @@
             <hr/>
     
             <p>DNI: {{$ticket->dni}}</p>
+            <p>Nombre: {{$ticket->nomcli}} {{$ticket->paterno}} {{$ticket->materno}}</p>
             <p>Fecha: {{now()}}</p>
     
         </div>
