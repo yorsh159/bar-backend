@@ -46,7 +46,7 @@ class ProductoController extends Controller
             $extension = $file->getClientOriginalExtension();
 
             $picture = $name_file.'.'.$extension;
-            $file->move('C:\xampp\htdocs\react-bar\public\img',$picture);
+            $file->move('img',$picture);
             $producto->imagen = $picture;
         
         }
