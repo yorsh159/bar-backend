@@ -4,9 +4,11 @@
     
         <div class="row my-3">
             <div class="col-10" style="text-align: center">
-                <h1 >"Cupidos Bar"</h1>
-                <p>RUC: 202111221</p>
-                <p>Av. XXX - XXX Lima-Surco</p>
+                @foreach ($company as $company)
+                <h1 >{{$company->razon_social}}</h1>
+                <p>RUC: {{$company->ruc}}</p>
+                <p>{{$company->direccion}}</p>
+                @endforeach
             </div>
         </div>
     
@@ -40,8 +42,8 @@
                         <td>{{$ticket->id}}</td>
                         <td>{{$ticket->nombre}}</td>
                         <td style="text-align: right">{{$ticket->cantidad}}</td>
-                        <td style="text-align: right">{{$ticket->precio}}</td>
-                        <td style="text-align: right">{{($ticket->cantidad)*($ticket->precio)}}</td>                 
+                        <td style="text-align: right">{{number_format($ticket->precio,2,'.','')}}</td>
+                        <td style="text-align: right">{{number_format(($ticket->cantidad)*($ticket->precio),2,'.','')}}</td>                 
                     </tr> 
                 
                 @endforeach
@@ -49,9 +51,9 @@
             </table>
     
             <div style="text-align: right">
-                <p>Subtotal: {{$ticket->subtotal}}</p>
-                <p>IGV 18%: {{$ticket->igv}}</p>
-                <p>Total: {{$ticket->total}}</p>
+                <p>Subtotal: {{number_format($ticket->gravada,2,'.','')}}</p>
+                <p>IGV 18%: {{number_format($ticket->igv,2,'.','')}}</p>
+                <p>Total: {{number_format($ticket->total,2,'.','')}}</p>
             </div>
     
             <hr/>

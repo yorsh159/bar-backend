@@ -65,8 +65,9 @@ Route::get('/liquidacion/mp',[LiquidacionController::class,'metodo_pago']);
 Route::get('/liquidacion/comision',[LiquidacionController::class,'comision_total']);
 Route::get('/liquidacion/ventas',[LiquidacionController::class,'ventas']);
 Route::get('/liquidacion/pedidoLibre',[LiquidacionController::class,'pedidos_libre']);
-Route::get('/pagoComision/buscar/{codigo}',[PagoComisionController::class,'buscarCol']);
-Route::post('/pagoComision/{codigo}',[PagoComisionController::class,'updComision']);
+Route::get('/liquidacion/comisionPagada',[LiquidacionController::class,'comision_pagada']);
+Route::get('/pagoComision/buscar/{id}',[PagoComisionController::class,'buscarCol']);
+Route::post('/pagoComision/{id}',[PagoComisionController::class,'updComision']);
 
 Route::apiResource('/categorias', CategoriaController::class);
 Route::apiResource('/productos', ProductoController::class);

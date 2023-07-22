@@ -45,6 +45,15 @@ class LiquidacionController extends Controller
         return response()->json(['data'=>$query]);
     }
 
+    public function comision_pagada()
+    {
+        $query=DB::select("SELECT SUM(comision_unitaria) as 'comision_pagada' FROM comisiones
+        WHERE created_at BETWEEN (SELECT inicio FROM horario) and (SELECT fin FROM horario)
+        and pagado=1 and estado=1");
+
+        return response()->json(['data'=>$query]);
+    }
+
     public function ventas(){
         $query=DB::select("SELECT pd.id,pd.pedido_id,pd.producto_id,p.tipo,p.nombre,SUM(pd.cantidad) as CantidadVendida,p.precio,(SUM(pd.cantidad) * p.precio ) as monto from pedido_detalles pd 
         inner join productos p on p.id=pd.producto_id

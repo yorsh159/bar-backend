@@ -48,32 +48,36 @@ class PagoComisionController extends Controller
         //
     }
 
-    public function buscarCol($codigo){
+    public function buscarCol($id){
         
 
-        $query=DB::select("SELECT c.id,c.colaborador_id,co.codigo,co.nombre,SUM(c.comision_unitaria) as comision,c.pagado,c.created_at FROM comisiones c
-                           INNER JOIN colaborador co on co.id=c.colaborador_id
-                           WHERE co.codigo='$codigo' and c.pagado=0 and c.created_at BETWEEN (SELECT inicio FROM horario) and (SELECT fin FROM horario)
-                           GROUP BY c.colaborador_id");
+        $query=DB::select("SELECT c.id,c.colaborador_id,co.codigo,co.nombre,c.comision_unitaria,c.pagado,c.created_at FROM comisiones c
+                            INNER JOIN colaborador co on co.id=c.colaborador_id
+                            WHERE c.id=$id and c.pagado=0 
+                            and c.estado=1");
         
         return response()->json(['data'=>$query]);
 
     }
 
-    public function updComision($codigo){
-
-        $id=DB::select("SELECT id FROM colaborador WHERE codigo='$codigo' ");
-        $array = json_decode(json_encode($id), true);
-        //return $id;
+    public function updComision($id){
 
         $now=now();
-        $idCol=$array;
 
-        foreach($idCol as $idCol){
-            $upd = $idCol['id'];
-            DB::update("UPDATE comisiones set pagado = 1, updated_at = '$now'  WHERE colaborador_id = $upd and created_at BETWEEN (SELECT inicio FROM horario) and (SELECT fin FROM horario)");
+        DB::update("UPDATE comisiones set pagado = 1, updated_at = '$now'  WHERE id= $id");
+
+        // $id=DB::select("SELECT id FROM colaborador WHERE codigo='$id' ");
+        // $array = json_decode(json_encode($id), true);
+        // //return $id;
+
+        // $now=now();
+        // $idCol=$array;
+
+        // foreach($idCol as $idCol){
+        //     $upd = $idCol['id'];
+        //     DB::update("UPDATE comisiones set pagado = 1, updated_at = '$now'  WHERE colaborador_id = $upd and created_at BETWEEN (SELECT inicio FROM horario) and (SELECT fin FROM horario)");
                     
-        }
+        // }
 
     }
 }

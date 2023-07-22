@@ -122,7 +122,7 @@ class BoletaController extends Controller
 
     public function listar(){
 
-        $tickets = Boleta::with('user')->where('estado',1)->orderBy('created_at','asc')->get();
+        $tickets = Boleta::with('user')->where('estado',1)->orderBy('created_at','desc')->get();
 
         //$ticket = Boleta::where('estado',1)->orderBy('nombre','asc')->get();
 
@@ -145,7 +145,9 @@ class BoletaController extends Controller
                                inner join productos pr on pr.id = pd.producto_id
                                where bp.boleta_id='.$id);
 
-        return view('detalle',['ticket'=>$ticket,'date'=>$date,'fecha1'=>$fecha1]);
+        $company = DB::select('SELECT razon_social,ruc,direccion FROM company LIMIT 1');
+
+        return view('detalle',['ticket'=>$ticket,'date'=>$date,'fecha1'=>$fecha1,'company'=>$company]);
 
     }
 
@@ -157,12 +159,14 @@ class BoletaController extends Controller
                               inner join pedido_detalles pd on pd.pedido_id=bp.pedido_id
                               inner join productos pr on pr.id = pd.producto_id
                               where bp.boleta_id='.$id);
+        
+        $company = DB::select('SELECT razon_social,ruc,direccion FROM company LIMIT 1');
 
-        $pdf = PDF::loadView('pdf',['ticket'=>$ticket])->setPaper(array(0,0,340,650))->set_option('dpi', 80);
+        $pdf = PDF::loadView('pdf',['ticket'=>$ticket,'company'=>$company])->setPaper(array(0,0,340,650))->set_option('dpi', 80);
         //$pdf->loadHTML('<h1>Test</h1>');
         return $pdf->stream();
 
-        return view('pdf',['ticket'=>$ticket]);
+        return view('pdf');
     }
 
 }

@@ -6,9 +6,12 @@
 
     <div class="row my-3">
         <div class="col-10" style="text-align: center">
-            <h1 >"Cupidos Bar"</h1>
-            <p>RUC: 202111221</p>
-            <p>Av. XXX - XXX Lima-Surco</p>
+            @foreach ($company as $company)
+                <h1 >{{$company->razon_social}}</h1>
+                <p>RUC: {{$company->ruc}}</p>
+                <p>{{$company->direccion}}</p>
+            @endforeach
+            
         </div>
     </div>
 
@@ -51,7 +54,7 @@
         </table>
 
         <div style="text-align: right">
-            <p>Subtotal: {{number_format($ticket->subtotal,2,'.','')}}</p>
+            <p>Subtotal: {{number_format($ticket->gravada,2,'.','')}}</p>
             <p>IGV 18%: {{number_format($ticket->igv,2,'.','')}}</p>
             <p>Total: {{number_format($ticket->total,2,'.','')}}</p>
         </div>
@@ -59,7 +62,8 @@
         <hr/>
 
         <p>DNI: {{$ticket->dni}}</p>
-        <p>Fecha: {{date('d-m-Y')}}</p>
+        <p>Nombre: {{$ticket->nomcli}} {{$ticket->paterno}} {{$ticket->materno}}</p>
+        <p>Fecha: {{now()}}</p>
 
 
 
