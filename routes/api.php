@@ -6,7 +6,6 @@ use App\Http\Controllers\BoletaComisionTaxiController;
 use App\Http\Controllers\BoletaController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ColaboradorController;
-use App\Http\Controllers\ColaboradoresController;
 use App\Http\Controllers\ComisionesController;
 use App\Http\Controllers\ComisionTaxiController;
 use App\Http\Controllers\HorarioController;
@@ -23,6 +22,7 @@ use App\Http\Controllers\PedidosAllController;
 use App\Http\Controllers\PedidoUpdController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\UsuarioPasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +52,7 @@ Route::middleware('auth:sanctum')->group(function(){
 });
 
 Route::apiResource('/usuarios', UsuarioController::class);
+Route::apiResource('/usuario', UsuarioPasswordController::class);
 Route::apiResource('/colaborador', ColaboradorController::class);
 Route::apiResource('/imagen',ImagenController::class);
 Route::apiResource('/marcacion', MarcacionController::class);
@@ -60,6 +61,7 @@ Route::apiResource('/horario', HorarioController::class);
 Route::apiResource('/incentivo', IncentivoController::class);
 Route::apiResource('/pedidoUpd', PedidoUpdController::class);
 Route::apiResource('/pedidosAll', PedidosAllController::class);
+
 Route::get('/liquidacion',[LiquidacionController::class,'index']);
 Route::get('/liquidacion/mp',[LiquidacionController::class,'metodo_pago']);
 Route::get('/liquidacion/comision',[LiquidacionController::class,'comision_total']);

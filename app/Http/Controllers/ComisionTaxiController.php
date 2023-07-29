@@ -28,6 +28,13 @@ class ComisionTaxiController extends Controller
  
         $colaboradores = $request->colaborador;
 
+        $boleta_id = $request->nota;
+        //$id=json_decode($boleta_id);
+        //$id2=implode($id);
+        foreach($boleta_id as $boleta_id){
+            $id=$boleta_id['id'];
+        }
+
         $colaboradorArr = [];
 
         foreach($colaboradores as $colaborador){
@@ -36,6 +43,7 @@ class ComisionTaxiController extends Controller
                 'colaborador_id'=>$colaborador['id'],
                 'comision_total'=>$comision_total,
                 'comision_unitaria'=>$comision_unitaria,
+                'ticket_id'=> $id,
                 'created_at'=>now(),
                 'updated_at'=>now(),
             ];
