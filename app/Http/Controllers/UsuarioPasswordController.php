@@ -2,32 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UsuarioCollection;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UsuarioController extends Controller
+class UsuarioPasswordController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return new UsuarioCollection(User::where('estado','1')->orderBy('name','asc')->get());
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request,User $usuario)
     {
-        
+  
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $usuario)
+    public function show(string $id)
     {
         //
     }
@@ -36,28 +35,28 @@ class UsuarioController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $usuario)
-    {   
-        $usuario->name = $request->name;
-        $usuario->email = $request->email;
-        $usuario->role = $request->role;
+    {
+        $this->validate($request,[
+            'password' => 'required|min:8',
+        ],
+
+        );
+
+        $usuario->password = bcrypt($request->password);
         $usuario->save();
         
         return [
-           'usuario'=> $usuario,
+            'usuario'=> $usuario,
         ];
+
+        //DB::update("UPDATE comisiones set estado = 0, updated_at = '$now'  WHERE ticket_id = $idBoleta");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request,User $usuario)
+    public function destroy(string $id)
     {
         //
-        $usuario->estado = 0;
-        $usuario->save();
-
-        return[
-            'usuario'=>$usuario,
-        ];
     }
 }
